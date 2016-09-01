@@ -1,3 +1,5 @@
+import org.gradle.api.artifacts.Dependency;
+
 apply plugin: 'com.android.library'
 
 android {
@@ -9,6 +11,14 @@ android {
 }
 
 dependencies {
-    compile project(':support-v4')
-    compile project(':support-appcompat-v7')
+    compile findDependency(':support-v4', 'com.android.support:support-v4:23.3.+')
+    compile findDependency(':support-appcompat-v7', 'com.android.support:appcompat-v7:23.3.+')
+}
+
+Dependency findDependency(String projectName, String moduleName) {
+    if (findProject(projectName) != null) {
+        return dependencies.project(path: projectName)
+    }
+
+    return dependencies.create(moduleName)
 }
